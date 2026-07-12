@@ -33,6 +33,10 @@ A candidate is compared against the current baseline by the gate, which promotes
 
 Every rule emits a pass/fail reason line, so a decision is always explainable. The gate refuses to compare runs made on a different dataset or model — it raises rather than silently producing a meaningless verdict. The baseline pointer (`runs/baseline.json`) advances only on a promote.
 
+## Retargeting to another task
+
+The pipeline machinery is task-agnostic. To point it at a different single-label classification task, edit `src/task.py` — the label set (`CLASSES`) and the expected response field (`RESPONSE_KEY`, i.e. `{"category": "<label>"}`) live there and nowhere else — then supply matching prompts and a dataset. Nothing else changes. (Non-classification tasks like summarization or extraction need a different scoring layer, not just a new `task.py`.)
+
 ## Setup
 
 ```bash

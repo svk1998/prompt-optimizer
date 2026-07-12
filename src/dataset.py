@@ -12,16 +12,9 @@ from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 
-CLASSES: frozenset[str] = frozenset(
-    {
-        "bug_report",
-        "feature_request",
-        "billing_issue",
-        "ux_complaint",
-        "performance_issue",
-        "praise",
-    }
-)
+# Re-exported so existing callers can keep importing CLASSES from src.dataset; the
+# single source of truth is src.task (edit there to retarget the task).
+from src.task import CLASSES
 
 _VALID_DIFFICULTIES = frozenset({"easy", "hard"})
 

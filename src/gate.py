@@ -14,9 +14,9 @@ import json
 from dataclasses import dataclass
 from typing import Literal
 
-from src.dataset import CLASSES
 import src.runner as runner
 from src.runner import RunRecord
+from src.task import CLASSES
 
 
 @dataclass(frozen=True)

@@ -21,7 +21,7 @@ from typing import Any, Callable, Protocol, Sequence, TypeVar
 import groq
 from dotenv import load_dotenv
 
-from src.dataset import CLASSES, EvalExample, dataset_fingerprint, load_dataset
+from src.dataset import EvalExample, dataset_fingerprint, load_dataset
 from src.metrics import (
     PARSE_FAILURE,
     accuracy,
@@ -32,6 +32,7 @@ from src.metrics import (
     per_class_prf,
 )
 from src.registry import PromptVersion, load_prompt
+from src.task import CLASSES, RESPONSE_KEY
 
 _T = TypeVar("_T")
 
@@ -91,7 +92,7 @@ def parse_prediction(raw_output: str) -> str:
 
     Strategy: try strict json.loads first; on failure, fall back to extracting the
     first {...} block via regex and parsing that. Either way, the result must be a
-    JSON object with a string "category" field whose value is one of CLASSES —
+    JSON object with a string RESPONSE_KEY field whose value is one of CLASSES —
     anything else (wrong shape, missing key, unknown label) is PARSE_FAILURE.
     """
     obj = _try_json_loads(raw_output)
@@ -103,7 +104,7 @@ def parse_prediction(raw_output: str) -> str:
     if not isinstance(obj, dict):
         return PARSE_FAILURE
 
-    label = obj.get("category")
+    label = obj.get(RESPONSE_KEY)
     if not isinstance(label, str) or label not in CLASSES:
         return PARSE_FAILURE
 
