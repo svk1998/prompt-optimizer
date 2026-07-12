@@ -64,14 +64,20 @@ def confusion_matrix(
     Raises ValueError if `y_true` contains a value outside `classes` — true labels are
     expected to always be valid (e.g. sourced from src.dataset.load_dataset, which
     already validates them), so an unknown true label indicates a caller bug.
+
+    Raises ValueError if `classes` is empty, or if `y_true` and `y_pred` have different
+    lengths — both indicate a caller bug rather than data worth silently tolerating.
     """
     class_set = set(classes)
+    if not class_set:
+        raise ValueError("classes must not be empty")
+
     matrix: dict[str, dict[str, int]] = {
         true_label: {c: 0 for c in class_set} | {PARSE_FAILURE: 0}
         for true_label in class_set
     }
 
-    for true_label, pred_label in zip(y_true, y_pred):
+    for true_label, pred_label in zip(y_true, y_pred, strict=True):
         if true_label not in class_set:
             raise ValueError(
                 f"y_true contains label {true_label!r} not in classes {sorted(class_set)}"
@@ -116,13 +122,18 @@ def per_class_prf(cm: dict[str, dict[str, int]]) -> dict[str, dict[str, float | 
     return result
 
 
+def _total_predictions(cm: dict[str, dict[str, int]]) -> int:
+    """Sum of every cell in the confusion matrix, including the PARSE_FAILURE column."""
+    return sum(sum(row.values()) for row in cm.values())
+
+
 def accuracy(cm: dict[str, dict[str, int]]) -> float:
     """Correct predictions over all predictions in the matrix.
 
     Parse failures count as wrong (they never land on the diagonal), so they reduce
     accuracy the same as any other misclassification.
     """
-    total = sum(sum(row.values()) for row in cm.values())
+    total = _total_predictions(cm)
     if total == 0:
         return 0.0
     correct = sum(cm[cls][cls] for cls in cm)
@@ -179,7 +190,7 @@ def format_report(cm: dict[str, dict[str, int]]) -> str:
     macro = macro_f1(per_class)
     micro = micro_f1(cm)
 
-    total = sum(sum(row.values()) for row in cm.values())
+    total = _total_predictions(cm)
     parse_failures = sum(row.get(PARSE_FAILURE, 0) for row in cm.values())
     failure_rate = parse_failures / total if total > 0 else 0.0
 

@@ -63,6 +63,14 @@ class TestConfusionMatrix:
         with pytest.raises(ValueError):
             confusion_matrix(["not_a_real_class"], ["praise"], CLASSES)
 
+    def test_mismatched_lengths_raises_valueerror(self):
+        with pytest.raises(ValueError):
+            confusion_matrix(["bug_report", "praise"], ["bug_report"], CLASSES)
+
+    def test_empty_classes_raises_valueerror(self):
+        with pytest.raises(ValueError, match="classes"):
+            confusion_matrix([], [], [])
+
 
 class TestPerClassPrfAgainstSklearn:
     def test_normal_case_all_classes_represented(self):
