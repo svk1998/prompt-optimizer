@@ -1,0 +1,48 @@
+{"id": "voc-001", "text": "The app crashes every time I try to upload a photo larger than 5MB.", "label": "bug_report", "difficulty": "easy"}
+{"id": "voc-002", "text": "I was charged twice for my subscription this month, please refund one payment.", "label": "billing_issue", "difficulty": "easy"}
+{"id": "voc-003", "text": "Would love a dark mode option, my eyes hurt at night.", "label": "feature_request", "difficulty": "easy"}
+{"id": "voc-004", "text": "Absolutely love the new update, everything feels so smooth now!", "label": "praise", "difficulty": "easy"}
+{"id": "voc-005", "text": "The dashboard takes over 30 seconds to load every morning.", "label": "performance_issue", "difficulty": "easy"}
+{"id": "voc-006", "text": "I can never find the export button, the menu structure makes no sense.", "label": "ux_complaint", "difficulty": "easy"}
+{"id": "voc-007", "text": "Login fails with error 500 whenever I use my Google account.", "label": "bug_report", "difficulty": "easy"}
+{"id": "voc-008", "text": "Why is there no way to filter transactions by date range? Please add this.", "label": "feature_request", "difficulty": "easy"}
+{"id": "voc-009", "text": "My invoice shows the wrong GST number, I need this corrected for my accounts.", "label": "billing_issue", "difficulty": "easy"}
+{"id": "voc-010", "text": "Search results take forever to appear when the catalog is large.", "label": "performance_issue", "difficulty": "easy"}
+{"id": "voc-011", "text": "The onboarding flow is confusing, I had no idea what to do after signing up.", "label": "ux_complaint", "difficulty": "easy"}
+{"id": "voc-012", "text": "Customer support resolved my issue in under an hour, fantastic service!", "label": "praise", "difficulty": "easy"}
+{"id": "voc-013", "text": "Data disappears from the cart when I switch between tabs.", "label": "bug_report", "difficulty": "easy"}
+{"id": "voc-014", "text": "Please add support for exporting reports as Excel files.", "label": "feature_request", "difficulty": "easy"}
+{"id": "voc-015", "text": "I cancelled my plan last month but was still billed yesterday.", "label": "billing_issue", "difficulty": "easy"}
+{"id": "voc-016", "text": "Video playback stutters constantly even on fast wifi.", "label": "performance_issue", "difficulty": "easy"}
+{"id": "voc-017", "text": "Too many popups asking me to rate the app, it interrupts my work.", "label": "ux_complaint", "difficulty": "easy"}
+{"id": "voc-018", "text": "Been using this for two years and it keeps getting better. Great job team.", "label": "praise", "difficulty": "easy"}
+{"id": "voc-019", "text": "Notifications arrive for messages I already deleted, clearly something broken.", "label": "bug_report", "difficulty": "easy"}
+{"id": "voc-020", "text": "An offline mode would be a game changer for my field team.", "label": "feature_request", "difficulty": "easy"}
+{"id": "voc-021", "text": "The upgrade page charged me in USD but advertised INR pricing.", "label": "billing_issue", "difficulty": "easy"}
+{"id": "voc-022", "text": "App uses so much battery that my phone dies by lunchtime.", "label": "performance_issue", "difficulty": "easy"}
+{"id": "voc-023", "text": "Font size is tiny and there is no way to increase it, very hard to read.", "label": "ux_complaint", "difficulty": "easy"}
+{"id": "voc-024", "text": "The new sync feature saved me hours this week, thank you!", "label": "praise", "difficulty": "easy"}
+{"id": "voc-025", "text": "Great, another update and now the share button does nothing. Amazing work as always.", "label": "bug_report", "difficulty": "hard", "note": "sarcasm reads like praise"}
+{"id": "voc-026", "text": "Love the app overall but honestly the checkout crashing on UPI payments is killing me.", "label": "bug_report", "difficulty": "hard", "note": "mixed praise + bug, primary intent is the bug"}
+{"id": "voc-027", "text": "App toh accha hai but payment ka option bahut kam hai, net banking bhi add karo please.", "label": "feature_request", "difficulty": "hard", "note": "Hinglish, praise + request"}
+{"id": "voc-028", "text": "Wow, so intuitive that it only took me forty minutes to find the logout button.", "label": "ux_complaint", "difficulty": "hard", "note": "sarcasm"}
+{"id": "voc-029", "text": "The app is slow to figure out. Took me a week to understand where anything is.", "label": "ux_complaint", "difficulty": "hard", "note": "'slow' here means learnability, not speed"}
+{"id": "voc-030", "text": "Everything lags after the last update, scrolling feels like wading through mud.", "label": "performance_issue", "difficulty": "hard", "note": "'after the update' tempts bug_report; symptom is degraded speed"}
+{"id": "voc-031", "text": "Mujhe do baar paisa kata hai iss month, refund kab milega?", "label": "billing_issue", "difficulty": "hard", "note": "Hinglish"}
+{"id": "voc-032", "text": "It would be nice if the app didn't log me out every single day.", "label": "bug_report", "difficulty": "hard", "note": "phrased as a wish, describes broken behavior"}
+{"id": "voc-033", "text": "Honestly can't complain, refund came through fast and the team was polite about my billing mixup.", "label": "praise", "difficulty": "hard", "note": "mentions billing but intent is praise"}
+{"id": "voc-034", "text": "Why do I need seven taps to send one invoice? Add a quick-send shortcut.", "label": "feature_request", "difficulty": "hard", "note": "UX pain framed as a concrete request"}
+{"id": "voc-035", "text": "The report page loads fine but the numbers in the revenue column are simply wrong.", "label": "bug_report", "difficulty": "hard", "note": "correctness issue, not performance"}
+{"id": "voc-036", "text": "Subscription price is fine, I just wish there was a family plan option.", "label": "feature_request", "difficulty": "hard", "note": "mentions pricing but asks for a new plan type"}
+{"id": "voc-037", "text": "Loading spinner just spins forever on the analytics tab, never actually loads.", "label": "bug_report", "difficulty": "hard", "note": "infinite load is broken behavior, not slowness"}
+{"id": "voc-038", "text": "Yaar itna slow chal raha hai aajkal, kuch karo iska.", "label": "performance_issue", "difficulty": "hard", "note": "Hinglish"}
+{"id": "voc-039", "text": "The free trial ended without warning and my card was charged, at least send an email before billing people.", "label": "billing_issue", "difficulty": "hard", "note": "billing pain with an embedded suggestion"}
+{"id": "voc-040", "text": "Ten out of ten, would wait three minutes for the homepage to load again.", "label": "performance_issue", "difficulty": "hard", "note": "sarcastic praise about slowness"}
+{"id": "voc-041", "text": "New design looks gorgeous, genuinely a joy to use now.", "label": "praise", "difficulty": "hard", "note": "mentions design; positive, not a UX complaint"}
+{"id": "voc-042", "text": "I keep tapping the back button and losing all my form data, please save drafts automatically.", "label": "feature_request", "difficulty": "hard", "note": "data loss on back is expected behavior; the ask is autosave"}
+{"id": "voc-043", "text": "Payment succeeded per my bank but the app still shows my plan as unpaid.", "label": "bug_report", "difficulty": "hard", "note": "involves payment but is a state-sync defect"}
+{"id": "voc-044", "text": "The settings page is a maze. I gave up looking for the notification controls.", "label": "ux_complaint", "difficulty": "hard", "note": "navigation frustration"}
+{"id": "voc-045", "text": "App crashed and when I reopened it, it charged my saved card again. Two problems in one.", "label": "billing_issue", "difficulty": "hard", "note": "crash + double charge; money impact dominates"}
+{"id": "voc-046", "text": "Sab kuch theek hai lekin dashboard pe graphs samajh nahi aate, bahut cluttered hai.", "label": "ux_complaint", "difficulty": "hard", "note": "Hinglish, clutter complaint"}
+{"id": "voc-047", "text": "Fast, clean, and it just works. Rare these days.", "label": "praise", "difficulty": "hard", "note": "mentions speed positively; not a performance issue"}
+{"id": "voc-048", "text": "Could you make the app open faster? Cold start takes ages on my phone.", "label": "performance_issue", "difficulty": "hard", "note": "phrased as request; core issue is startup latency"}
