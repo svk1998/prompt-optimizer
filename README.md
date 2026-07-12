@@ -6,6 +6,19 @@ Data-driven prompt optimization pipeline for a Voice-of-Customer classification 
 
 ## How it works
 
+```mermaid
+flowchart TD
+    P["Prompt vN.yaml"] --> RUN
+    D["Golden dataset<br/>(frozen JSONL)"] --> RUN
+    RUN["run_eval — predict &amp; parse<br/>each example"] --> MET["Metrics<br/>(overall + easy/hard)"]
+    MET --> REC["RunRecord → runs/&lt;id&gt;.json"]
+    REC --> HAS{"Baseline exists?"}
+    HAS -->|no| BOOT["Bootstrap baseline"]
+    HAS -->|yes| GATE{"Gate:<br/>all 5 rules pass?"}
+    GATE -->|yes| PROM["PROMOTE<br/>advance baseline pointer"]
+    GATE -->|no| REV["REVERT<br/>keep baseline"]
+```
+
 Each prompt lives as a versioned YAML file (`prompts/vN.yaml`) with a content fingerprint. A run sends every dataset example to the model, parses the response into one of six labels — `bug_report`, `feature_request`, `billing_issue`, `ux_complaint`, `performance_issue`, `praise` — and records a full `RunRecord`: per-example predictions, metrics (overall plus easy/hard slices), token/cost/latency totals, and both the prompt and dataset fingerprints. Unparseable responses become an explicit `PARSE_FAILURE` rather than being dropped, so they stay visible in every metric.
 
 A candidate is compared against the current baseline by the gate, which promotes it only if **all** of these pass:
