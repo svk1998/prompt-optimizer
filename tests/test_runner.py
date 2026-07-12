@@ -298,6 +298,32 @@ class TestSaveRunRecord:
         assert data["totals"]["prompt_tokens"] == 10
 
 
+class TestLoadRunRecord:
+    def test_round_trips_a_saved_run_record(self, tmp_path: Path, monkeypatch):
+        monkeypatch.setattr(runner, "RUNS_DIR", tmp_path)
+        prompt = _prompt("v1")
+        examples = [_example("e1", label="praise"), _example("e2", label="bug_report")]
+        client = runner.MockClient(
+            [_completion('{"category": "praise"}'), _completion('{"category": "bug_report"}')]
+        )
+        original = runner.run_eval(prompt, examples, "test-model", client, max_workers=1)
+        path = runner.save_run_record(original)
+
+        loaded = runner.load_run_record(path)
+
+        assert loaded == original
+
+    def test_run_id_matches_filename_stem(self, tmp_path: Path, monkeypatch):
+        monkeypatch.setattr(runner, "RUNS_DIR", tmp_path)
+        prompt = _prompt("v1")
+        examples = [_example("e1")]
+        client = runner.MockClient([_completion('{"category": "bug_report"}')])
+        record = runner.run_eval(prompt, examples, "test-model", client, max_workers=1)
+        path = runner.save_run_record(record)
+
+        assert path.stem == record.run_id
+
+
 class TestGroqClient:
     def _fake_response(self, content: str, prompt_tokens: int = 12, completion_tokens: int = 4):
         class _FakeMessage:

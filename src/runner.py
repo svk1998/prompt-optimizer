@@ -12,7 +12,6 @@ import json
 import os
 import re
 import time
-import uuid
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -191,6 +190,16 @@ def _metrics_summary(y_true: list[str], y_pred: list[str]) -> dict[str, Any]:
     }
 
 
+def _timestamp_now() -> str:
+    """Millisecond-precision UTC timestamp, used as both RunRecord.timestamp and the
+    run_id/filename stem. Second-precision was not enough: back-to-back run_eval calls
+    (e.g. Phase 6's optimize loop, or two dry-runs in a test) can land in the same
+    second and would otherwise silently collide on the same runs/<run_id>.json file.
+    """
+    now = datetime.now(timezone.utc)
+    return now.strftime("%Y%m%dT%H%M%S") + f"{now.microsecond // 1000:03d}Z"
+
+
 def run_eval(
     prompt: PromptVersion,
     examples: list[EvalExample],
@@ -263,9 +272,9 @@ def run_eval(
         ),
     }
 
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    timestamp = _timestamp_now()
     return RunRecord(
-        run_id=f"{timestamp}_{prompt.version}_{uuid.uuid4().hex[:8]}",
+        run_id=f"{timestamp}_{prompt.version}",
         timestamp=timestamp,
         prompt_version=prompt.version,
         prompt_fingerprint=prompt.fingerprint,
@@ -334,23 +343,61 @@ class GroqClient:
 
 
 def save_run_record(record: RunRecord) -> Path:
-    """Serialize `record` to runs/<timestamp>_<prompt_version>.json, return the path."""
+    """Serialize `record` to runs/<record.run_id>.json, return the path.
+
+    `run_id` is `<timestamp>_<prompt_version>` precisely so the filename can be
+    reconstructed from a baseline pointer's run_id alone (see src.gate) without
+    needing to store a separate path.
+    """
     RUNS_DIR.mkdir(parents=True, exist_ok=True)
-    path = RUNS_DIR / f"{record.timestamp}_{record.prompt_version}.json"
+    path = RUNS_DIR / f"{record.run_id}.json"
     with path.open("w", encoding="utf-8") as f:
         json.dump(record.to_dict(), f, indent=2)
     return path
 
 
+def load_run_record(path: Path) -> RunRecord:
+    """Parse a JSON file written by save_run_record back into a RunRecord."""
+    with Path(path).open("r", encoding="utf-8") as f:
+        data = json.load(f)
+    per_example = [PerExampleResult(**row) for row in data["per_example"]]
+    return RunRecord(
+        run_id=data["run_id"],
+        timestamp=data["timestamp"],
+        prompt_version=data["prompt_version"],
+        prompt_fingerprint=data["prompt_fingerprint"],
+        dataset_fingerprint=data["dataset_fingerprint"],
+        model=data["model"],
+        params=data["params"],
+        per_example=per_example,
+        metrics=data["metrics"],
+        totals=data["totals"],
+    )
+
+
 # Canned responses for --dry-run: enough variety to exercise correct predictions, a
 # misclassification, and (deliberately) one malformed output so PARSE_FAILURE shows up
 # in the report without needing a live API key.
-_DRY_RUN_RESPONSES = [
+DRY_RUN_RESPONSES = [
     Completion(content='{"category": "bug_report"}', prompt_tokens=40, completion_tokens=8),
     Completion(content='{"category": "praise"}', prompt_tokens=38, completion_tokens=7),
     Completion(content='{"category": "feature_request"}', prompt_tokens=42, completion_tokens=8),
     Completion(content="sorry, I cannot help with that", prompt_tokens=35, completion_tokens=6),
 ]
+
+
+def build_client(dry_run: bool) -> LLMClient:
+    """Build the LLMClient a CLI entrypoint should use.
+
+    Shared by src.runner's own __main__ and main.py, so "dry-run uses MockClient,
+    otherwise require GROQ_API_KEY and use the real Groq SDK" is defined exactly once.
+    """
+    if dry_run:
+        return MockClient(DRY_RUN_RESPONSES)
+    api_key = os.environ.get("GROQ_API_KEY")
+    if not api_key:
+        raise SystemExit("GROQ_API_KEY not set (see .env.example) — or pass --dry-run")
+    return GroqClient(api_key=api_key)
 
 
 def _parse_args(argv: list[str] | None) -> argparse.Namespace:
@@ -372,15 +419,7 @@ def main(argv: list[str] | None = None) -> RunRecord:
 
     examples = load_dataset(args.dataset)
     prompt = load_prompt(args.prompt)
-
-    client: LLMClient
-    if args.dry_run:
-        client = MockClient(_DRY_RUN_RESPONSES)
-    else:
-        api_key = os.environ.get("GROQ_API_KEY")
-        if not api_key:
-            raise SystemExit("GROQ_API_KEY not set (see .env.example) — or pass --dry-run")
-        client = GroqClient(api_key=api_key)
+    client = build_client(args.dry_run)
 
     record = run_eval(
         prompt,
