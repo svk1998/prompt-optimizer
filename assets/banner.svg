@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" role="img" aria-label="prompt-optimizer: data-driven prompt optimization pipeline">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#818cf8"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="260" rx="16" fill="url(#bg)"/>
+
+  <!-- subtle dot texture -->
+  <g fill="#334155" opacity="0.55">
+    <circle cx="700" cy="40" r="2"/>
+    <circle cx="760" cy="220" r="2"/>
+    <circle cx="120" cy="220" r="2"/>
+    <circle cx="1140" cy="50" r="2"/>
+    <circle cx="540" cy="60" r="2"/>
+    <circle cx="360" cy="215" r="2"/>
+  </g>
+
+  <g font-family="ui-sans-serif, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <!-- eyebrow label -->
+    <text x="64" y="76" font-size="13" font-weight="600" letter-spacing="4" fill="#22d3ee">DATA-DRIVEN PROMPT OPTIMIZATION</text>
+
+    <!-- title -->
+    <text x="64" y="132" font-size="54" font-weight="700" fill="#f1f5f9">prompt-<tspan fill="url(#accent)">optimizer</tspan></text>
+
+    <!-- tagline -->
+    <text x="64" y="176" font-size="19" fill="#94a3b8">Versioned prompts &#183; frozen golden dataset &#183; hand-rolled metrics &#183; regression gating</text>
+
+    <!-- pipeline motif: v1 -> gate -> PROMOTE / REVERT -->
+    <g>
+      <rect x="800" y="107" width="64" height="46" rx="9" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+      <text x="832" y="136" font-size="19" font-weight="600" fill="#e2e8f0" text-anchor="middle">v2</text>
+
+      <line x1="864" y1="130" x2="922" y2="130" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <polygon points="975,98 1022,130 975,162 928,130" fill="#1e293b" stroke="url(#accent)" stroke-width="1.5"/>
+      <text x="975" y="136" font-size="15" font-weight="600" fill="#e2e8f0" text-anchor="middle">gate</text>
+
+      <line x1="1022" y1="130" x2="1072" y2="102" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="1022" y1="130" x2="1072" y2="158" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <text x="1082" y="104" font-size="15" font-weight="700" fill="#4ade80">PROMOTE</text>
+      <text x="1082" y="166" font-size="15" font-weight="700" fill="#f87171">REVERT</text>
+    </g>
+  </g>
+</svg>
