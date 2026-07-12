@@ -39,7 +39,8 @@ def load_dataset(path: str | Path) -> list[EvalExample]:
     """Parse a JSONL golden dataset file into a list of EvalExample.
 
     Fails loudly with ValueError (including the 1-indexed offending line number) on:
-    duplicate ids, unknown labels, empty text, or invalid difficulty.
+    duplicate ids, unknown labels, empty (or whitespace-only) text, invalid difficulty,
+    malformed JSON, or a row missing one of the required fields.
     """
     examples: list[EvalExample] = []
     seen_ids: set[str] = set()
@@ -50,7 +51,18 @@ def load_dataset(path: str | Path) -> list[EvalExample]:
             if not stripped:
                 continue
 
-            row = json.loads(stripped)
+            try:
+                row = json.loads(stripped)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f"line {line_number}: invalid JSON ({exc})") from exc
+
+            missing = [
+                key for key in ("id", "text", "label", "difficulty") if key not in row
+            ]
+            if missing:
+                raise ValueError(
+                    f"line {line_number}: missing required field(s) {missing}"
+                )
 
             example_id = row["id"]
             text = row["text"]

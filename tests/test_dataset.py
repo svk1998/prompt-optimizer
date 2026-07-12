@@ -99,6 +99,39 @@ class TestLoadDatasetErrors:
         with pytest.raises(ValueError, match=r"line 1"):
             load_dataset(path)
 
+    def test_whitespace_only_text_raises_valueerror_with_line_number(self, tmp_path: Path):
+        rows = _valid_rows()
+        rows[2]["text"] = "   "
+        path = _write_jsonl(tmp_path / "whitespace_text.jsonl", rows)
+        with pytest.raises(ValueError, match=r"line 3"):
+            load_dataset(path)
+
+    def test_missing_required_field_raises_valueerror_with_line_number(self, tmp_path: Path):
+        rows = _valid_rows()
+        del rows[1]["label"]
+        path = _write_jsonl(tmp_path / "missing_field.jsonl", rows)
+        with pytest.raises(ValueError, match=r"line 2"):
+            load_dataset(path)
+
+    def test_malformed_json_raises_valueerror_with_line_number(self, tmp_path: Path):
+        path = tmp_path / "malformed.jsonl"
+        with path.open("w", encoding="utf-8") as f:
+            f.write(json.dumps(_valid_rows()[0]) + "\n")
+            f.write("{not valid json\n")
+        with pytest.raises(ValueError, match=r"line 2"):
+            load_dataset(path)
+
+    def test_blank_line_does_not_shift_line_numbers(self, tmp_path: Path):
+        rows = _valid_rows()
+        path = tmp_path / "blank_line.jsonl"
+        with path.open("w", encoding="utf-8") as f:
+            f.write(json.dumps(rows[0]) + "\n")
+            f.write("\n")  # blank line at physical line 2
+            rows[1]["label"] = "not_a_real_label"
+            f.write(json.dumps(rows[1]) + "\n")  # physical line 3
+        with pytest.raises(ValueError, match=r"line 3"):
+            load_dataset(path)
+
 
 class TestFingerprint:
     def test_reordering_lines_leaves_fingerprint_unchanged(self, tmp_path: Path):
