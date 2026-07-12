@@ -1,0 +1,11 @@
+# Python standard ignores
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Run records are generated artifacts (append-only run history + baseline pointer).
+# Plan marks runs/*.json as "gitignored optional" — choosing to gitignore them here
+# since they're reproducible from re-running the pipeline against the golden dataset.
+# Revisit if baseline.json needs to be tracked for reproducibility across machines.
+runs/*.json

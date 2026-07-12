@@ -1,0 +1,5 @@
+# Production dependencies only. Dev/test-only dependencies (pytest, scikit-learn, etc.)
+# live in requirements-dev.txt — install that separately for running the test suite.
+groq>=0.11.0
+python-dotenv>=1.0.0
+pyyaml>=6.0

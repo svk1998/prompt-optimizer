@@ -1,0 +1,6 @@
+# Dev/test-only dependencies. Install in addition to requirements.txt to run the
+# test suite. scikit-learn is used exclusively in tests to verify hand-rolled
+# metrics (Phase 2) — production code must never import it.
+-r requirements.txt
+pytest>=8.0.0
+scikit-learn>=1.4.0
